@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Gallery</title>
+
+    <!-- https://google.github.io/material-design-icons/#icon-font-for-the-web -->
+    <!-- Using via Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <!-- https://tailwindcss.com/docs/installation -->
+    <!-- Using Tailwind via CDN -->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+
+    <!-- https://v3.vuejs.org/guide/installation.html#release-notes -->
+    <!-- Vue CDN -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<style>
+    .gallery-item-1 {
+        background-image: url(images/1.png);
+    }
+    
+    .gallery-item-2 {
+        background-image: url(images/2.png);
+    }
+    
+    .gallery-item-3 {
+        background-image: url(images/3.jpg);
+    }
+</style>
+
+<body>
+    <div id="app" class="flex justify-center item-center space-x-3 mb-20 bg-blue-50 xl\:h-screen">
+        <div class="card p-3">
+            <h1 class="font-bold text-3xl text-blue-500 hover:text-blue-700 text-center">LOVE gallery ({{countPic}}) </h1>
+
+            <!--search-->
+            <button v-on:click="toggleSearch" v-show="!useSearch" class="inline-block float-right pt-5 pr-5">
+        <span class="material-icons">
+          search
+        </span>
+      </button>
+
+            <div v-show="useSearch" class="inline-block float-right pt-5 pr-5">
+                <input v-model="inputSearch" placeholder="please type picture name to serach">
+                <button v-on:click="toggleSearch" class="btn btn-danger btn-sm ml-2">cancel</button>
+            </div>
+            <!-- <p v-show="useSearch">Search result : {{filterSearch}}</p> -->
+
+            <div v-show="hasView" class="grid justify-items-stretch flex flex-col  p-3 m-2 bg-blue-200">
+                <span class="material-icons" style="color: white;" v-on:click="hasView=!hasView">
+          disabled_by_default
+          </span>
+                <div>
+                    <img v-bind:src="viewPic" style="width: 40%;" class="justify-self-center" />
+
+                </div>
+            </div>
+
+            <!--body-->
+            <div v-for="(image,index) in filterSearch" class="text-center object-center">
+                <div class="flex ml-96">
+                    <img v-bind:src="image.url" class="mt-16 rounded shadow-xl transition w-1/4 h-auto" v-on:click="toggleView(index)" />
+                    <p class="font-semibold ml-10 mt-16 text-red-500 text-opacity-75 text-2xl hover:text-red-700">{{image.title}}</p>
+                    <p class="font-semibold -ml-6 mr-96 mt-28 text-gray-500 text-md">{{image.detail}}</p>
+                </div>
+                <div class="-mt-10 ml-20">
+                    <span v-on:click="toggleLike(index)" class="material-icons cursor-pointer border-none">
+            favorite_border
+            <img v-show="image.done" src="./images/4.png" class="w-6 h-6 -mt-6">
+          </span>
+                    <p class="-mt-7 ml-16">{{image.count}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- my main.js -->
+    <script src="./main.js"></script>
+</body>
+
+
+</html>
